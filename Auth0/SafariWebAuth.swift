@@ -43,6 +43,7 @@ class SafariWebAuth: WebAuth {
     var nonce: String?
     private var authenticationSession = true
     private var safariPresentationStyle = UIModalPresentationStyle.fullScreen
+    private var safariDismissStyle: Any?
 
     convenience init(clientId: String, url: URL, presenter: ControllerModalPresenter = ControllerModalPresenter(), telemetry: Telemetry = Telemetry()) {
         self.init(clientId: clientId, url: url, presenter: presenter, storage: TransactionStore.shared, telemetry: telemetry)
@@ -104,6 +105,13 @@ class SafariWebAuth: WebAuth {
         self.parameters["audience"] = audience
         return self
     }
+    
+    
+    @available(iOS 11.0, *)
+    func setSafariDismissStyle(_ style: SFSafariViewController.DismissButtonStyle) -> Self {
+        self.safariDismissStyle = style
+        return self
+    }
 
     func useLegacyAuthentication(withStyle style: UIModalPresentationStyle = .fullScreen) -> Self {
         self.authenticationSession = false
@@ -152,7 +160,7 @@ class SafariWebAuth: WebAuth {
         controller.modalPresentationStyle = safariPresentationStyle
         
         if #available(iOS 11.0, *) {
-            controller.dismissButtonStyle = .cancel
+            controller.dismissButtonStyle = (self.safariDismissStyle as? SFSafariViewController.DismissButtonStyle) ?? .cancel
         }
         
         let finish: (Result<Credentials>) -> Void = { [weak controller] (result: Result<Credentials>) -> Void in

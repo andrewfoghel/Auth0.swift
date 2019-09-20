@@ -339,9 +339,10 @@ class WebAuthSpec: QuickSpec {
                 it("should present user with the .cancel dismiss button style") {
                     let auth = newWebAuth()
                         .useLegacyAuthentication(withStyle: .overFullScreen)
+                        .setSafariDismissStyle(.close)
                     let controller = auth.newSafari(DomainURL, callback: { _ in }).0
                     
-                    expect(controller.dismissButtonStyle) == .cancel
+                    expect(controller.dismissButtonStyle) == .close
                 }
             }
         }
