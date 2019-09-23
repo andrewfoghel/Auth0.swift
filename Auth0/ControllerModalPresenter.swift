@@ -28,8 +28,8 @@ struct ControllerModalPresenter {
         return UIApplication.shared.keyWindow?.rootViewController
     }
 
-    func present(controller: UIViewController) {
-        topViewController?.present(controller, animated: true, completion: nil)
+    func present(controller: UIViewController, animated: Bool = true, completion: (() -> ())? = nil) {
+        topViewController?.present(controller, animated: animated, completion: completion)
     }
 
     var topViewController: UIViewController? {

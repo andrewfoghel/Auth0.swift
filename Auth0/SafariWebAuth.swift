@@ -111,7 +111,7 @@ class SafariWebAuth: WebAuth {
         return self
     }
 
-    func start(_ callback: @escaping (Result<Credentials>) -> Void) {
+    func start(_ callback: @escaping (Result<Credentials>) -> Void, presentationCallback: (() -> ())?) {
         guard
             let redirectURL = self.redirectURL, !redirectURL.absoluteString.hasPrefix(SafariWebAuth.NoBundleIdentifier)
             else {
@@ -133,7 +133,7 @@ class SafariWebAuth: WebAuth {
             let (controller, finish) = newSafari(authorizeURL, callback: callback)
             let session = SafariSession(controller: controller, redirectURL: redirectURL, state: state, handler: handler, finish: finish, logger: self.logger)
             controller.delegate = session
-            self.presenter.present(controller: controller)
+            self.presenter.present(controller: controller, animated: true, completion: presentationCallback)
             logger?.trace(url: authorizeURL, source: "Safari")
             self.storage.store(session)
         }
@@ -141,7 +141,7 @@ class SafariWebAuth: WebAuth {
             let (controller, finish) = newSafari(authorizeURL, callback: callback)
             let session = SafariSession(controller: controller, redirectURL: redirectURL, state: state, handler: handler, finish: finish, logger: self.logger)
             controller.delegate = session
-            self.presenter.present(controller: controller)
+            self.presenter.present(controller: controller, animated: true, completion: presentationCallback)
             logger?.trace(url: authorizeURL, source: "Safari")
             self.storage.store(session)
         #endif
