@@ -111,7 +111,7 @@ class SafariWebAuth: WebAuth {
         return self
     }
 
-    func start(_ callback: @escaping (Result<Credentials>) -> Void) {
+    func start(_ callback: @escaping (Result<Credentials>) -> Void, presentationCallback: (() -> ())?) {
         guard
             let redirectURL = self.redirectURL, !redirectURL.absoluteString.hasPrefix(SafariWebAuth.NoBundleIdentifier)
             else {
@@ -133,7 +133,7 @@ class SafariWebAuth: WebAuth {
             let (controller, finish) = newSafari(authorizeURL, callback: callback)
             let session = SafariSession(controller: controller, redirectURL: redirectURL, state: state, handler: handler, finish: finish, logger: self.logger)
             controller.delegate = session
-            self.presenter.present(controller: controller)
+            self.presenter.present(controller: controller, animated: true, completion: presentationCallback)
             logger?.trace(url: authorizeURL, source: "Safari")
             self.storage.store(session)
         }
@@ -141,7 +141,7 @@ class SafariWebAuth: WebAuth {
             let (controller, finish) = newSafari(authorizeURL, callback: callback)
             let session = SafariSession(controller: controller, redirectURL: redirectURL, state: state, handler: handler, finish: finish, logger: self.logger)
             controller.delegate = session
-            self.presenter.present(controller: controller)
+            self.presenter.present(controller: controller, animated: true, completion: legacyCompletion)
             logger?.trace(url: authorizeURL, source: "Safari")
             self.storage.store(session)
         #endif
@@ -216,7 +216,7 @@ class SafariWebAuth: WebAuth {
             .appendingPathComponent("callback")
     }
 
-    func clearSession(federated: Bool, callback: @escaping (Bool) -> Void) {
+    func clearSession(federated: Bool, callback: @escaping (Bool) -> Void, presentationCallback: (() -> ())?) {
         let logoutURL = federated ? URL(string: "/v2/logout?federated", relativeTo: self.url)! : URL(string: "/v2/logout", relativeTo: self.url)!
         #if swift(>=3.2)
         if #available(iOS 11.0, *), self.authenticationSession {
@@ -233,12 +233,12 @@ class SafariWebAuth: WebAuth {
         } else {
             let controller = SilentSafariViewController(url: logoutURL) { callback($0) }
             logger?.trace(url: logoutURL, source: "Safari")
-            self.presenter.present(controller: controller)
+            self.presenter.present(controller: controller, animated: false, completion: presentationCallback)
         }
         #else
             let controller = SilentSafariViewController(url: logoutURL) { callback($0) }
             logger?.trace(url: logoutURL, source: "Safari")
-            self.presenter.present(controller: controller)
+            self.presenter.present(controller: controller, animated: false, completion: presentationCallback)
         #endif
     }
 }
