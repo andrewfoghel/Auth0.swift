@@ -217,8 +217,10 @@ public protocol WebAuth: Trackable, Loggable {
      and it's corresponding callback with be called with a failure result of `Authentication.Error.Cancelled`
 
      - parameter callback: callback called with the result of the WebAuth flow
+     - parameter presentationCallback: callback called when the `SFSafariViewController` is finished presenting when
+                                       using `useLegacyAuthentication(withStyle:)`
      */
-    func start(_ callback: @escaping (Result<Credentials>) -> Void)
+    func start(_ callback: @escaping (Result<Credentials>) -> Void, presentationCallback: (() -> ())?)
 
     /**
      Removes Auth0 session and optionally remove the Identity Provider session.
