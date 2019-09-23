@@ -141,7 +141,7 @@ class SafariWebAuth: WebAuth {
             let (controller, finish) = newSafari(authorizeURL, callback: callback)
             let session = SafariSession(controller: controller, redirectURL: redirectURL, state: state, handler: handler, finish: finish, logger: self.logger)
             controller.delegate = session
-            self.presenter.present(controller: controller, animated: true, completion: legacyCompletion)
+            self.presenter.present(controller: controller, animated: true, completion: presentationCallback)
             logger?.trace(url: authorizeURL, source: "Safari")
             self.storage.store(session)
         #endif
