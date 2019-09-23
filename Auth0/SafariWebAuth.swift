@@ -216,7 +216,7 @@ class SafariWebAuth: WebAuth {
             .appendingPathComponent("callback")
     }
 
-    func clearSession(federated: Bool, callback: @escaping (Bool) -> Void, presentationCallback: (() -> ())?) {
+    func clearSession(federated: Bool, callback: @escaping (Bool) -> Void) {
         let logoutURL = federated ? URL(string: "/v2/logout?federated", relativeTo: self.url)! : URL(string: "/v2/logout", relativeTo: self.url)!
         #if swift(>=3.2)
         if #available(iOS 11.0, *), self.authenticationSession {
@@ -233,12 +233,12 @@ class SafariWebAuth: WebAuth {
         } else {
             let controller = SilentSafariViewController(url: logoutURL) { callback($0) }
             logger?.trace(url: logoutURL, source: "Safari")
-            self.presenter.present(controller: controller, animated: false, completion: presentationCallback)
+            self.presenter.present(controller: controller)
         }
         #else
             let controller = SilentSafariViewController(url: logoutURL) { callback($0) }
             logger?.trace(url: logoutURL, source: "Safari")
-            self.presenter.present(controller: controller, animated: false, completion: presentationCallback)
+            self.presenter.present(controller: controller)
         #endif
     }
 }

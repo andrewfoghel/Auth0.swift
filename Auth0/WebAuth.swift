@@ -246,10 +246,8 @@ public protocol WebAuth: Trackable, Loggable {
 
      - parameter federated: Bool to remove the IdP session
      - parameter callback: callback called with bool outcome of the call
-     - parameter presentationCallback: callback called when the `SFSafariViewController` is finished presenting when
-                                       using `useLegacyAuthentication(withStyle:)`
      */
-    func clearSession(federated: Bool, callback: @escaping (Bool) -> Void, presentationCallback: (() -> ())?)
+    func clearSession(federated: Bool, callback: @escaping (Bool) -> Void)
 }
 
 public extension WebAuth {
