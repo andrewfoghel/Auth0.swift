@@ -233,12 +233,12 @@ class SafariWebAuth: WebAuth {
         } else {
             let controller = SilentSafariViewController(url: logoutURL) { callback($0) }
             logger?.trace(url: logoutURL, source: "Safari")
-            self.presenter.present(controller: controller)
+            self.presenter.present(controller: controller, animated: false)
         }
         #else
             let controller = SilentSafariViewController(url: logoutURL) { callback($0) }
             logger?.trace(url: logoutURL, source: "Safari")
-            self.presenter.present(controller: controller)
+            self.presenter.present(controller: controller, animated: false)
         #endif
     }
 }
