@@ -23,7 +23,7 @@
 import UIKit
 import SafariServices
 
-class SilentSafariViewController: SFSafariViewController, SFSafariViewControllerDelegate {
+class SilentSafariViewController: SFSafariViewController {
     
     required init(url URL: URL) {
         #if swift(>=3.2)
