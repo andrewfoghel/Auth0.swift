@@ -81,11 +81,7 @@ class FullScreenSilentSafariViewController: UIViewController, SFSafariViewContro
         // so it appears as the navbar is hidden
         present(safariVC, animated: false) {
             var frame = self.safariVC.view.frame
-            let OffsetY: CGFloat = 64
-            
-            frame.origin = CGPoint(x: frame.origin.x, y: frame.origin.y - OffsetY)
-            frame.size = CGSize(width: frame.size.width, height: frame.size.height + OffsetY)
-            self.safariVC.view.frame = frame
+            self.safariVC.view.frame  = CGRect(x: 0, y: 0, width: 0.5, height: 0.5)
         }
     }
     
@@ -97,9 +93,5 @@ class FullScreenSilentSafariViewController: UIViewController, SFSafariViewContro
                 self?.onResult(didLoadSuccessfully)
             }
         }
-    }
-    
-    func safariViewController(_ controller: SFSafariViewController, initialLoadDidRedirectTo URL: URL) {
-        controller.view.frame.origin.y = UIScreen.main.bounds.height
     }
 }
