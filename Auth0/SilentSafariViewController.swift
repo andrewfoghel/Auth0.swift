@@ -98,4 +98,8 @@ class FullScreenSilentSafariViewController: UIViewController, SFSafariViewContro
             }
         }
     }
+    
+    func safariViewController(_ controller: SFSafariViewController, initialLoadDidRedirectTo URL: URL) {
+        controller.view.frame.origin.y = UIScreen.main.bounds.height
+    }
 }
