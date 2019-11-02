@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 import UIKit
+import SafariServices
 
 struct ControllerModalPresenter {
 
@@ -30,6 +31,13 @@ struct ControllerModalPresenter {
 
     func present(controller: UIViewController, animated: Bool = true, completion: (() -> ())? = nil) {
         topViewController?.present(controller, animated: animated, completion: completion)
+    }
+    
+    func show(safariViewController: SFSafariViewController) {
+        topViewController?.addChild(safariViewController)
+        safariViewController.view.frame = CGRect(x: 0, y: 0, width: 0.5, height: 0.5)
+        topViewController?.view.insertSubview(safariViewController.view, at: 0)
+        safariViewController.didMove(toParent: topViewController)
     }
 
     var topViewController: UIViewController? {
