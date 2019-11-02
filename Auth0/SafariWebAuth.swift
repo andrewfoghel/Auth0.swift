@@ -230,14 +230,14 @@ class SafariWebAuth: WebAuth {
             let clearSession = SafariAuthenticationSessionCallback(url: clearSessionURL, schemeURL: redirectURL, callback: callback)
             self.storage.store(clearSession)
         } else {
-            let controller = FullScreenSilentSafariViewController(url: logoutURL) { callback($0) }
+            let controller = SilentSafariViewController(url: logoutURL) { callback($0) }
             logger?.trace(url: logoutURL, source: "Safari")
-            self.presenter.present(controller: controller, animated: false)
+            self.presenter.show(safariViewController: controller)
         }
         #else
-            let controller = FullScreenSilentSafariViewController(url: logoutURL) { callback($0) }
+            let controller = SilentSafariViewController(url: logoutURL) { callback($0) }
             logger?.trace(url: logoutURL, source: "Safari")
-            self.presenter.present(controller: controller, animated: false)
+            self.presenter.show(safariViewController: controller)
         #endif
     }
 }
