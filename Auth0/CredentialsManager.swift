@@ -195,17 +195,20 @@ public struct CredentialsManager {
 
     func hasExpired(_ credentials: Credentials) -> Bool {
 
+        var hasATExpired = true
+        var hasIDTExpired = true
+
         if let expiresIn = credentials.expiresIn {
-            if expiresIn < Date() { return true }
+            if expiresIn > Date() { hasATExpired = false }
         }
 
         if let token = credentials.idToken,
             let tokenDecoded = decode(jwt: token),
             let exp = tokenDecoded["exp"] as? Double {
-            if Date(timeIntervalSince1970: exp) < Date() { return true }
+            if Date(timeIntervalSince1970: exp) > Date() { hasIDTExpired = false }
         }
 
-        return false
+        return hasATExpired || hasIDTExpired
     }
 }
 

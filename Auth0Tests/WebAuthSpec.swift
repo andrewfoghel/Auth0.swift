@@ -135,6 +135,14 @@ class WebAuthSpec: QuickSpec {
                     .buildAuthorizeURL(withRedirectURL: RedirectURL, defaults: defaults, state: "state")
                 expect(url.a0_components?.queryItems).toNot(containItem(withName: "scope", value: "openid"))
             }
+            
+            it("should clear all the parameters if `clearParameters(_:)` is called`") {
+                let url = newWebAuth()
+                    .parameters(["scope": "openid email phone"])
+                    .clearParameters()
+                
+                expect(url.parameters) == [:]
+            }
 
             itBehavesLike(ValidAuthorizeURLExample) {
                 return [

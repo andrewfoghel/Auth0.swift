@@ -85,6 +85,11 @@ class SafariWebAuth: WebAuth {
         parameters.forEach { self.parameters[$0] = $1 }
         return self
     }
+    
+    func clearParameters() -> Self {
+        self.parameters = [:]
+        return self
+    }
 
     func responseType(_ responseType: [ResponseType]) -> Self {
         self.responseType = responseType

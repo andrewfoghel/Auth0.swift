@@ -156,6 +156,21 @@ public protocol WebAuth: Trackable, Loggable {
      */
     func parameters(_ parameters: [String: String]) -> Self
 
+    /**
+     Clears the stored parameters.
+     
+     NOTE: This should be called before each of these methods:
+        - `state(_:)`
+        - `connection(_:)`
+        - `scope(_:)`
+        - `connectionScope(_:)`
+        - `parameters(_:)`
+     
+     - returns: the same WebAuth instance to allow method chaining
+     */
+    func clearParameters() -> Self
+    
+    
     /// Setup the response types to be used for authentcation
     ///
     /// - Parameter response: Array of ResponseOptions
