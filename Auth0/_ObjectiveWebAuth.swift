@@ -116,7 +116,8 @@ public class _ObjectiveOAuth2: NSObject {
             case .failure(let cause):
                 callback(cause as NSError, nil)
             }
-        }, presentationCallback: nil)
+        }, presentationCallback: nil,
+           safariControllerDeinitCallback: nil)
     }
 
     /**

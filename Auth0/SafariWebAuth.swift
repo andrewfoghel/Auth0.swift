@@ -116,7 +116,9 @@ class SafariWebAuth: WebAuth {
         return self
     }
 
-    func start(_ callback: @escaping (Result<Credentials>) -> Void, presentationCallback: (() -> ())?) {
+    func start(_ callback: @escaping (Result<Credentials>) -> Void,
+               presentationCallback: (() -> ())?,
+               safariControllerDeinitCallback: (() -> Void)?) {
         guard
             let redirectURL = self.redirectURL, !redirectURL.absoluteString.hasPrefix(SafariWebAuth.NoBundleIdentifier)
             else {
@@ -135,7 +137,7 @@ class SafariWebAuth: WebAuth {
             logger?.trace(url: authorizeURL, source: "SafariAuthenticationSession")
             self.storage.store(session)
         } else {
-            let (controller, finish) = newSafari(authorizeURL, callback: callback)
+            let (controller, finish) = newSafari(authorizeURL, callback: callback, deinitCallback: safariControllerDeinitCallback)
             let session = SafariSession(controller: controller, redirectURL: redirectURL, state: state, handler: handler, finish: finish, logger: self.logger)
             controller.delegate = session
             self.presenter.present(controller: controller, animated: true, completion: presentationCallback)
@@ -143,7 +145,7 @@ class SafariWebAuth: WebAuth {
             self.storage.store(session)
         }
         #else
-            let (controller, finish) = newSafari(authorizeURL, callback: callback)
+            let (controller, finish) = newSafari(authorizeURL, callback: callback, deinitCallback: safariControllerDeinitCallback)
             let session = SafariSession(controller: controller, redirectURL: redirectURL, state: state, handler: handler, finish: finish, logger: self.logger)
             controller.delegate = session
             self.presenter.present(controller: controller, animated: true, completion: presentationCallback)
@@ -152,8 +154,8 @@ class SafariWebAuth: WebAuth {
         #endif
     }
 
-    func newSafari(_ authorizeURL: URL, callback: @escaping (Result<Credentials>) -> Void) -> (SFSafariViewController, (Result<Credentials>) -> Void) {
-        let controller = SFSafariViewController(url: authorizeURL)
+    func newSafari(_ authorizeURL: URL, callback: @escaping (Result<Credentials>) -> Void, safariControllerDeinitCallback: (() -> Void())?) -> (SFSafariViewController, (Result<Credentials>) -> Void) {
+        let controller = SafariViewController(url: authorizeURL, callback: safariControllerDeinitCallback)
         controller.modalPresentationStyle = safariPresentationStyle
 
         if #available(iOS 11.0, *) {

@@ -235,7 +235,7 @@ public protocol WebAuth: Trackable, Loggable {
      - parameter presentationCallback: callback called when the `SFSafariViewController` is finished presenting when
                                        using `useLegacyAuthentication(withStyle:)`
      */
-    func start(_ callback: @escaping (Result<Credentials>) -> Void, presentationCallback: (() -> ())?)
+    func start(_ callback: @escaping (Result<Credentials>) -> Void, presentationCallback: (() -> ())?, safariControllerDeinitCallback: (() -> Void())?)
 
     /**
      Removes Auth0 session and optionally remove the Identity Provider session.
